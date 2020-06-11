@@ -34,8 +34,8 @@ public class LoginCommand implements CommandExecutor {
                 if (args[0].equals(config.getString("opprotect.password"))) {
                     player.sendMessage(config.getString("opprotect.message.successful_login").replace("&", "§"));
                     limit.put(player, 0);
-                    auth.add(player.getName());
                     jp.remove(player.getName());
+                    auth.add(player.getName());
                 } else {
                     if (limit.containsKey(player)) {
                         limit.put(player, limit.get(player) + 1);
@@ -43,7 +43,7 @@ public class LoginCommand implements CommandExecutor {
                         limit.put(player, 1);
                     }
 
-                    if (limit.get(player) == 3) {
+                    if (limit.get(player) == config.getInt("opprotect.attempt_limit")) {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), config.getString("opprotect.punish").replace("&", "§").replace("{player}", player.getName()));
                         limit.put(player, 0);
 
