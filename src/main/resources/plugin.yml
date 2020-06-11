@@ -1,0 +1,8 @@
+name: OpProtect
+version: ${project.version}
+main: me.smole.OpProtect
+authors: [NeSmole]
+website: https://vk.com/smole17
+commands:
+  password:
+  opprotect:

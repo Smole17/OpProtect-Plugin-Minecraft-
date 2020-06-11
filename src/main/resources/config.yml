@@ -1,0 +1,12 @@
+opprotect:
+  password: "example"
+  check_op_or_permission: false # False - check op : True - check permission
+  check_permission: "your_permission" # If check_op_or_permission = true
+  attempt_limit: 3 # Default limit - 3
+  punish: "kick {player} &cWrong password!" # Action after the limit | Without /
+  message:
+    enter_password: "&cEnter: /password <password>"
+    error_usage: "&cError! Usage /password <password>"
+    wrong_password: "&cWrong password!"
+    successful_login: "&aSuccessful login. Good luck!"
+    reloaded: "&aPlugin configuration has been reloaded!"
