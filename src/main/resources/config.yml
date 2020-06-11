@@ -10,3 +10,4 @@ opprotect:
     wrong_password: "&cWrong password!"
     successful_login: "&aSuccessful login. Good luck!"
     reloaded: "&aPlugin configuration has been reloaded!"
+    already_login: "&cYou are already logged in!"
