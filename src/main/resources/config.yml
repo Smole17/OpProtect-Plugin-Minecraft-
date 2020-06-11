@@ -2,7 +2,7 @@ opprotect:
   password: "example"
   check_op_or_permission: true # True - check op : false - check permission
   check_permission: "your_permission" # If check_op_or_permission = false
-  attempt_limit: 3 # Default limit - 3 | Only Integer
+  attempt_limit: 3 # Default limit - 3 | Double
   punish: "kick {player} &cWrong password!" # Action after the limit | Without /
   message:
     enter_password: "&cEnter: /password <password>"
