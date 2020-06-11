@@ -43,8 +43,9 @@ public class LoginCommand implements CommandExecutor {
                         limit.put(player, 1);
                     }
 
-                    if (limit.get(player) == config.getInt("opprotect.attempt_limit")) {
+                    if (limit.get(player) == config.getDouble("opprotect.attempt_limit")) {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), config.getString("opprotect.punish").replace("&", "§").replace("{player}", player.getName()));
+                        jp.remove(player.getName());
                         limit.put(player, 0);
 
                         return true;
