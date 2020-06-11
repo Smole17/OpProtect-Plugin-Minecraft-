@@ -17,6 +17,7 @@ public class LoginCommand implements CommandExecutor {
     }
     public static HashMap<Player, Integer> limit = new HashMap<>();
     public static ArrayList<String> jp = new ArrayList<>();
+    public static ArrayList<String> auth = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -27,14 +28,17 @@ public class LoginCommand implements CommandExecutor {
             player.sendMessage(config.getString("opprotect.message.error_usage").replace("&", "§"));
 
         } else {
+            if (auth.contains(player.getName())) {
+                sender.sendMessage(config.getString("opprotect.message.already_login").replace("&", "§"));
+            } else {
                 if (args[0].equals(config.getString("opprotect.password"))) {
                     player.sendMessage(config.getString("opprotect.message.successful_login").replace("&", "§"));
                     limit.put(player, 0);
+                    auth.add(player.getName());
                     jp.remove(player.getName());
-
                 } else {
                     if (limit.containsKey(player)) {
-                        limit.put(player, limit.get(player)+1);
+                        limit.put(player, limit.get(player) + 1);
                     } else {
                         limit.put(player, 1);
                     }
@@ -50,6 +54,9 @@ public class LoginCommand implements CommandExecutor {
 
                     return true;
                 }
+
+                return true;
+            }
 
             return true;
         }
