@@ -26,7 +26,6 @@ public class MainCMD implements CommandExecutor {
         IChatBaseComponent comp = ChatSerializer.a("{\"text\":\"CLICK ME\",\"bold\":true,\"color\":\"gray\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://vk.com/smole17\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":[\"\",{\"text\":\"CLICK CLICK CLICK\",\"color\":\"gray\"}]}}");
         PacketPlayOutChat chat = new PacketPlayOutChat(comp);
         PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-        connection.sendPacket(chat);
 
         if (player.hasPermission("opprotect.cmd")) {
             if (args.length != 1) {
