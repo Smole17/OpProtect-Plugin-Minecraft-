@@ -88,4 +88,9 @@ public class onPlayer implements Listener {
         }
     }
 
+    @EventHandler
+    public void onQuit (PlayerQuitEvent e) {
+        LoginCommand.auth.remove(e.getPlayer().getName());
+    }
+
 }
