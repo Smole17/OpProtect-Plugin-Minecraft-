@@ -1,61 +1,51 @@
 package me.smole;
 
+import net.minecraft.server.v1_12_R1.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.File;
 
-public class LoginCommand implements CommandExecutor {
+public class MainCMD implements CommandExecutor {
     private static OpProtect plugin;
-    public LoginCommand (OpProtect plugin) {
-        LoginCommand.plugin = plugin;
+    public MainCMD (OpProtect plugin) {
+        MainCMD.plugin = plugin;
     }
-    public static HashMap<Player, Integer> limit = new HashMap<>();
-    public static ArrayList<String> jp = new ArrayList<>();
-    public static ArrayList<String> auth = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        FileConfiguration config = plugin.getConfig();
         Player player = (Player) sender;
 
-        if (args.length != 1) {
-            player.sendMessage(config.getString("opprotect.message.error_usage").replace("&", "§"));
+        IChatBaseComponent comp = ChatSerializer.a("{\"text\":\"CLICK ME\",\"bold\":true,\"color\":\"gray\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://vk.com/smole17\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":[\"\",{\"text\":\"CLICK CLICK CLICK\",\"color\":\"gray\"}]}}");
+        PacketPlayOutChat chat = new PacketPlayOutChat(comp);
+        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
 
-        } else {
-            if (auth.contains(player.getName())) {
-                sender.sendMessage(config.getString("opprotect.message.already_login").replace("&", "§"));
-            } else {
-                if (args[0].equals(config.getString("opprotect.password"))) {
-                    player.sendMessage(config.getString("opprotect.message.successful_login").replace("&", "§"));
-                    limit.put(player, 0);
-                    jp.remove(player.getName());
-                    auth.add(player.getName());
-                } else {
-                    if (limit.containsKey(player)) {
-                        limit.put(player, limit.get(player) + 1);
-                    } else {
-                        limit.put(player, 1);
-                    }
+        if (player.hasPermission("opprotect.cmd")) {
+            if (args.length != 1) {
+                player.sendMessage("§cOp§fProtect §71.0");
+                player.sendMessage("§fAuthor:");
+                connection.sendPacket(chat);
+                return true;
+            }
 
-                    if (limit.get(player) == 3) {
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), config.getString("opprotect.punish").replace("&", "§").replace("{player}", player.getName()));
-                        limit.put(player, 0);
+            if (args[0].equalsIgnoreCase("reload")) {
+                File config = new File(plugin.getDataFolder() + File.separator + "config.yml");
+                if (!config.exists()) {
+                    plugin.getConfig().options().copyDefaults(true);
+                    plugin.saveDefaultConfig();
 
-                        return true;
-                    }
-
-                    player.sendMessage(config.getString("opprotect.message.wrong_password").replace("&", "§"));
-
-                    return true;
+                    Bukkit.getServer().getConsoleSender().sendMessage("config.yml has been created!");
                 }
 
-                return true;
+                plugin.reloadConfig();
+                player.sendMessage(plugin.getConfig().getString("opprotect.message.reloaded").replace("&", "§"));
             }
 
             return true;
@@ -63,5 +53,4 @@ public class LoginCommand implements CommandExecutor {
 
         return true;
     }
-
 }
